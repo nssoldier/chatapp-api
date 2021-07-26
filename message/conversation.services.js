@@ -1,12 +1,15 @@
 const Message = require("./message.model");
+const Account = require("../account/account.model");
 const Conversation = require("./conversation.model");
 
 const sendMessage = require("./services/sendMessage");
 const getConversationById = require("./services/getConversationById");
 const getListConversation = require("./services/getListConversation");
+const createConversation = require("./services/createConversation");
 
 module.exports = {
   sendMessage: (content, userId, conversationId) => sendMessage(Message, Conversation)(content, userId, conversationId),
-  getConversationById: (conversationId) => getConversationById(Message, Conversation)(conversationId),
-  getListConversation: (userId) => getListConversation(Message, Conversation)(userId),
+  createConversation: (userId, participators) => createConversation(Account, Conversation)(userId, participators),
+  getConversationById: (conversationId, page, pageSize) => getConversationById(Account, Message, Conversation)(conversationId, page, pageSize),
+  getListConversation: (userId, page, pageSize) => getListConversation(Message, Conversation)(userId, page, pageSize),
 };
