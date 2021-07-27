@@ -1,12 +1,12 @@
 module.exports =
   (Account, Message, Conversation) => async (userId, page, pageSize) => {
+    console.log(userId);
     const conversations = await Conversation.find({
       participantIds: userId,
     })
       .skip((page - 1) * pageSize)
       .limit(pageSize)
       .lean();
-
     const data = await Promise.all(
       conversations.map(async (conversation) => {
         if (

@@ -1,7 +1,16 @@
+const mongoose = require("mongoose");
+
 module.exports =
   (Account, Message, Conversation) =>
-  async (conversationId, page, pageSize) => {
-    const conversation = await Conversation.findById(conversationId).lean();
+  async (conversationId, page, pageSize, userId) => {
+    const conversation = await Conversation.findOne({
+      _id: mongoose.Schema.Types.ObjectId(conversationId),
+      participantIds: userId,
+    }).lean();
+
+    if (!conversation) {
+      throw new Error("Conversation unavailable!");
+    }
 
     const [messages, participants] = await Promise.all([
       Promise.all(

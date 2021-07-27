@@ -1,6 +1,23 @@
 const { emitToRoom } = require("../../socket");
 
 module.exports = (Account, Conversation) => async (userId, participatorIds) => {
+  if (participatorIds.length === 1) {
+    const conversations = await Conversation.find({
+      $and: [
+        { participantIds: userId },
+        { participantIds: participatorIds[0] },
+      ],
+    });
+
+    const res = conversations.filter(
+      (conversation) => conversation.participantIds.length === 2
+    );
+
+    if (res.length) {
+      return res[0];
+    }
+  }
+
   const participators = await Promise.all([
     Account.findById(userId),
     ...participatorIds.map(async (id) => await Account.findById(id)),

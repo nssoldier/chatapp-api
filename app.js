@@ -27,6 +27,7 @@ const server = http.Server(app);
   app.use(authenMiddlewares.verify);
 
   require("./account")(app);
+  require("./message")(app);
   // app.use(authenMiddlewares.verify);
 
   server.listen(PORT, function (err) {

@@ -16,7 +16,7 @@ module.exports = (app) => {
         res.status(200);
         res.json({ registered: true });
       } else {
-        throw new Error("Register failed!")
+        throw new Error("Register failed!");
       }
     } catch (error) {
       res.status(400);
@@ -56,8 +56,20 @@ module.exports = (app) => {
 
   api.use(authenMiddlewares.requiredUser);
 
-  api.get("/", async (req, res) => {
+  api.get("/current", async (req, res) => {
     const user = await accountServices.userProfile(req.userId);
+
+    res.json(user);
+  });
+
+  api.get("/", async (req, res) => {
+    const { query, page, pageSize } = req.query;
+
+    const user = await accountServices.searchUsers(
+      query,
+      parseInt(page),
+      parseInt(pageSize)
+    );
 
     res.json(user);
   });

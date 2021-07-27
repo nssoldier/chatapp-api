@@ -6,6 +6,7 @@ const edit = require("./services/edit");
 const changePassword = require("./services/changePassword");
 const userProfile = require("./services/userProfile");
 const verify = require("./services/verify");
+const searchUsers = require("./services/searchUsers");
 
 module.exports = {
   register: (newUser) => register(Account)(newUser),
@@ -15,4 +16,6 @@ module.exports = {
     changePassword(Account)(userId, oldPassword, newPassword),
   userProfile: (userId) => userProfile(Account)(userId),
   verify: (username, otp) => verify(Account)(username, otp),
+  searchUsers: (query, page, pageSize) =>
+    searchUsers(Account)(query, page, pageSize),
 };
